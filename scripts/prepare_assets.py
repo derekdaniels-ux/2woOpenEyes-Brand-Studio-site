@@ -67,7 +67,8 @@ def prepare_logos() -> None:
         with Image.open(source) as source_image:
             image = source_image.convert("RGBA")
             alpha = image.getchannel("A")
-            bounds = alpha.point(lambda value: 255 if value > 10 else 0).getbbox()
+            alpha_threshold = 80 if index == 9 else 10
+            bounds = alpha.point(lambda value: 255 if value > alpha_threshold else 0).getbbox()
             if bounds:
                 left, top, right, bottom = bounds
                 padding = max(2, round(max(right - left, bottom - top) * 0.02))
